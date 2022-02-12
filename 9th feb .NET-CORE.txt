@@ -1,0 +1,525 @@
+ex6:
+
+ public class Customer
+    {
+         public int cid { get; set; }
+         public string cname { get; set; }
+         public string Email { get; set; }
+    }
+
+ public IActionResult getcustdet()
+        {
+            return View();
+        }
+
+        public IActionResult  displaydet()
+        {
+            Customer cobj = new Customer();
+            cobj.cid = int.Parse(Request.Form["t1"].ToString());
+            cobj.cname = (Request.Form["t2"].ToString());
+            cobj.Email = Request.Form["t3"].ToString();
+            return View(cobj);
+        }
+<form method="post" action="displaydet">
+    <h2>Customer Details</h2>
+    Enter Cid: <input type="text" name="t1" /> <br />
+    Enter CName: <input type="text" name="t2" /> <br />
+    Enter CEmail: <input type="text" name="t3" /> <br />
+    <input type="submit" value="submit"/>
+</form>
+
+ex6:
+Nested class in Model:
+namespace CG_MVC_COREAPP.Models
+{
+    public class Employee
+    {
+        public Employee()
+        {
+            dtobj = new Dept();
+        }
+        public int eid { get; set; }
+        public string ename { get; set; }
+        public string desig { get; set; }
+        public Dept dtobj { get; set; }
+    }
+
+    public class Dept
+    {
+        public string dname { get; set; }
+        public int noemp { get; set; }
+    }
+}
+
+ public IActionResult printempdet()
+        {
+            Employee obj = new Employee();
+            obj.eid=1;
+            obj.ename = "xxx";
+            obj.desig = "HR-MANAGER";
+            obj.dtobj.dname = "HR-DEPT";
+            obj.dtobj.noemp =5;
+
+            return View(obj);
+        }
+
+@model CG_MVC_COREAPP.Models.Employee
+
+<h3>Emp_Dept Details</h3>
+
+<ul>
+    <li>
+        EmpId:@Model.eid
+    </li>
+    <li>
+        Ename:@Model.ename
+    </li>
+    <li>
+        Edesig:@Model.desig
+    </li>
+    <li>
+        DeptName:@Model.dtobj.dname
+    </li>
+    <li>
+        Noofemp:@Model.dtobj.noemp
+    </li>
+</ul>
+
+<table border="2px solid blue" style="background-color:azure;" cellpadding="20px">
+    <tr>
+        <td>EmpId</td>
+        <td>@Model.eid</td>
+    </tr>
+    <tr>
+        <td>EmpName</td>
+        <td>@Model.ename</td>
+    </tr>
+    <tr>
+        <td>EmpDesig</td>
+        <td>@Model.desig</td>
+    </tr>
+    <tr>
+        <td>Dept_name</td>
+        <td>@Model.dtobj.dname</td>
+    </tr>
+    <tr>
+        <td>Noofemp</td>
+        <td>@Model.dtobj.noemp</td>
+    </tr>
+</table>
+
+Ex7:Wrapper Class
+
+class student
+{
+}
+class coursedt
+{
+}
+
+class Exampleclass
+{
+student sobj{}
+
+coursedt cobj{}
+}
+
+
+namespace CG_MVC_COREAPP.Models
+{
+    public class Student
+    {
+        public int Regno { get; set; }
+        public string name { get; set; }
+        public string Mailid { get; set; }
+    }
+}
+
+namespace CG_MVC_COREAPP.Models
+{
+    public class Course
+    {
+        public string cname { get; set; }
+        public int cdur { get; set; }
+    }
+}
+
+
+namespace CG_MVC_COREAPP.ViewModel
+{
+    public class Stu_Course //Wrapper
+    {
+       public Student studentobj { get; set; }
+       public Course courseobj { get; set; }
+    }
+}
+
+
+        public IActionResult printscdet()
+        {
+            Student st = new Student() {Regno=1,name="Sam",Mailid="sam@yahoo.co.in" };
+            Course cs = new Course() {cname="FULL STACK .NET",cdur=4};
+
+            Stu_Course csobj = new Stu_Course() {
+              studentobj= st,
+              courseobj=cs
+            };
+            return View(csobj);
+        }
+
+@model CG_MVC_COREAPP.ViewModel.Stu_Course
+
+<h3> student_course Detail</h3>
+
+<table border="2px solid blue" style="background-color:azure;" cellpadding="20px">
+    <tr>
+        <td>Regno</td>
+        <td>@Model.studentobj.Regno</td>
+    </tr>
+    <tr>
+        <td>studentName</td>
+        <td>@Model.studentobj.name</td>
+    </tr>
+    <tr>
+        <td>EMailId:</td>
+        <td>@Model.studentobj.Mailid</td>
+    </tr>
+    <tr>
+        <td>Course_NAME</td>
+        <td>@Model.courseobj.cname</td>
+    </tr>
+    <tr>
+        <td>Course_duration</td>
+        <td>@Model.courseobj.cdur</td>
+    </tr>
+</table>
+
+Content returning result
+
+Viewresult
+
+ public ViewResult printdet()
+        {
+            return View("Index");
+        }
+
+contentresult
+
+public ContentResult printdet1()
+        {
+            return Content("<h1>welcome to content result</h1>","text/html");
+        }
+
+emptyresult
+  public EmptyResult printdet()
+        {
+             return new EmptyResult();
+        }
+
+
+jsonresult
+  public JsonResult printdet1()
+        {
+            Customer obj = new Customer() { cid=1,cname="Ann",Email="ann@gmail.com" };
+            return Json(obj);
+        }
+
+partialviewresult
+
+public PartialViewResult printdet()
+        {
+            return PartialView("_PartialView1");
+        }
+
+
+fileresult
+ public FileContentResult getfile()
+        {
+            string path = "C:/Users/Dhanraj/Downloads/Topics for Training.pdf";
+            byte[] file = System.IO.File.ReadAllBytes(path);
+
+            return new FileContentResult(file, "application/pdf");
+        }
+
+Forms using html-helpers
+
+Weakly-typed Form.
+no model,html controls
+
+ public IActionResult form1()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult form1(string t1,string t2,string chk1)
+        {
+            ViewData["fname"] = t1;
+            ViewData["lname"] = t2;
+            if (chk1 != null)
+                ViewData["workexp"] = "Fresher";
+            else
+                ViewData["workexp"] = "Experienced";
+            return View();
+        }
+
+<form method="post" action="form1">
+    Enter Fname:<input type="text" name="t1" /> <br />
+    Enter Lname:<input type="text" name="t2" /> <br />
+    Fresher ?:<input type="checkbox" name="chk1"/> <br />
+    <input type="submit" value="Submit" />
+</form>
+
+<strong>
+    Fname:@ViewData["fname"] <br />
+    Lname:@ViewData["lname"] <br />
+    Work Experience:@ViewData["workexp"]
+</strong>
+
+
+
+Strongly-typed Form(model-binded view).
+model,html-helpers
+
+namespace CG_MVC_COREAPP.Models
+{
+    public class StuDet
+    {
+       public string Fname { get; set; }
+       public string Lname { get; set; }
+       public Boolean workexp { get; set; }
+    }
+}
+
+public IActionResult form2()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult form2(StuDet stobj)
+        {
+            ViewData["fname"] = stobj.Fname;
+            ViewData["lname"] = stobj.Lname;
+            if (stobj.workexp == true)
+                ViewData["workexp"] = "Fresher";
+            else
+                ViewData["workexp"] = "Exp";
+            return View();
+        }
+
+@model CG_MVC_COREAPP.Models.StuDet
+
+@using (Html.BeginForm("form2", "Example", FormMethod.Post))
+{
+    <label>Enter Fname:</label>
+    @Html.TextBoxFor(x => x.Fname)
+    <br />
+
+    <label>Enter Lname:</label>
+    @Html.TextBoxFor(x => x.Lname)
+    <br />
+
+    <label>Fresher?:</label>
+    @Html.CheckBoxFor(m=>m.workexp)
+    <br />
+
+    <input type="submit" value="Submit"/>
+}
+
+<b>
+    Fname:@ViewData["fname"] <br />
+    Lname:@ViewData["lname"] <br />
+    Work Experience:@ViewData["workexp"]
+</b>
+
+
+Registration Form:(html helpers)
+
+ public IActionResult regform()
+        {
+            return View();
+        }
+
+@using (Html.BeginForm("regform", "Example"))
+{
+    <label>Enter Username:</label>
+    @Html.TextBox("Username")
+    <br />
+    <br />
+
+    <label>Enter Password:</label>
+    @Html.Password("Password")
+    <br />
+    <br />
+
+    <label>Select Gender:</label>
+    @Html.RadioButton("Gender", "M")
+    <label>Male</label>
+
+    @Html.RadioButton("Gender", "F")
+    <label>Female</label>
+    <br />
+    <br />
+
+
+    <label>Select Qualification:</label>
+    @Html.CheckBox("Course", true) <label>BE/Btech</label>
+
+    @Html.CheckBox("Course", false) <label>ME/Mtech</label>
+
+    @Html.CheckBox("Course", false) <label>PHd</label>
+
+    <br />
+    <br />
+
+    <label>Select City:</label>
+    @Html.DropDownList("city", new List<SelectListItem> {
+       new SelectListItem{Text="<-select->",Value="0"},
+      new SelectListItem{Text="Bangalore",Value="1"},
+      new SelectListItem{Text="Pune",Value="2"},
+       new SelectListItem{Text="Hyderabad",Value="3"},
+        new SelectListItem{Text="Delhi",Value="4"}
+   })
+    <br />
+    <br />
+
+    <label>Enter Address:</label>
+    @Html.TextArea("address", new { cols = 25, rows = 5 })
+
+    <br />
+    <br />
+
+    <input type="submit" value="Register" />
+
+    @Html.ActionLink("Login", "form1")
+}
+
+Form Validation:
+
+using system.componentModel.Dataannotations;
+
+using System.ComponentModel.DataAnnotations;
+
+namespace CG_MVC_COREAPP.Models
+{
+    public class LoginData
+    {
+        [Required(ErrorMessage ="Please enter Username")]
+        public string Username { get; set; }
+
+        [Required(ErrorMessage = "Please enter Password")]
+        public string Password { get; set; }
+
+        [Required(ErrorMessage = "Please enter MailId")]
+        [EmailAddress(ErrorMessage ="Invalid MailId")]
+        public string EmailId { get; set; }
+    }
+}
+
+ public IActionResult form3()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult form3(LoginData det)
+        {
+            if(ModelState.IsValid)
+            {
+               
+            }
+            return View();
+        }
+
+@model CG_MVC_COREAPP.Models.LoginData
+
+<h2>Login Details</h2>
+
+@using (Html.BeginForm("form3", "Example", FormMethod.Post))
+{
+    <label>Enter Username:</label>
+    @Html.TextBoxFor(x => x.Username)
+    @*@Html.ValidationMessageFor(x => x.Username)*@
+    <br />
+
+    <label>Enter Password:</label>
+    @Html.PasswordFor(x => x.Password)
+    @*@Html.ValidationMessageFor(x => x.Password)*@
+    <br />
+
+    <label>EmaliId:</label>
+    @Html.TextBoxFor(x => x.EmailId)
+    @*@Html.ValidationMessageFor(x => x.EmailId)*@
+    <br />
+
+    <input type="submit" value="Login" />
+    @Html.ValidationSummary(false);
+}
+
+Model-Binding of Radiobutton control:
+
+
+namespace CG_MVC_COREAPP.Models
+{
+    public class UserData
+    {
+        public string JobType { get; set; } //Fulltime/parttime
+        public string JobMode { get; set; } //Online/offline
+    }
+}
+
+ public IActionResult printradio()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult printradio(UserData obj)
+        {
+            ViewData["type"] = obj.JobType;
+            ViewData["mode"] = obj.JobMode;
+            return View();
+        }
+
+@model CG_MVC_COREAPP.Models.UserData
+
+<h3>Job Details</h3>
+
+@using (Html.BeginForm("printradio", "Example"))
+{
+    <label>Select JobType:</label>
+    @Html.RadioButtonFor(x => x.JobType, "Fulltime")
+    <label>Fulltime</label>
+
+    @Html.RadioButtonFor(x => x.JobType, "Parttime")
+    <label>Parttime</label>
+
+    <br />
+    <br />
+
+    <label>Select JobMode:</label>
+    @Html.RadioButtonFor(x => x.JobMode, "Online")
+    <label>Online</label>
+
+    @Html.RadioButtonFor(x => x.JobMode, "offline")
+    <label>offline</label>
+
+    <br />
+    <br />
+    <input type="submit" value="Submit" />
+}
+
+<b>
+    JobType:@ViewData["type"] <br />
+    JobMode:@ViewData["mode"]
+</b>
+
+Model Binding dropdownlist:
+
+
+
+
+
+
+
